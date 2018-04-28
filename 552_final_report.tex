@@ -1,7 +1,8 @@
+
 \documentclass{article}
 \usepackage[final]{nips_2017}
 \usepackage[utf8]{inputenc}
-\usepackage{graphicx}
+\usepackage{graphicx, float}
 \graphicspath{ {images1/} }
 \usepackage{babel,blindtext}
 
@@ -20,7 +21,7 @@
 
 \section{Introduction}
     Much progress towards artificial intelligence has been made using supervised learning systems that are trained to replicate the decisions of human experts. However, expert data sets are often expensive, unreliable or simply unavailable. Even when reliable data sets are available, they may impose a ceiling on the performance of systems trained in this manner. By contrast, reinforcement learning systems are trained from their own experience, in principle allowing them to exceed human capabilities, and to operate in domains where human expertise is lacking.
-    
+
     Alpha Zero(1) is one of a kind algorithm in this field which got lot of attention in the year 2017. Alpha Zero has had success in beating all other systems in board games, by using Neural Networks and MCTS( Monte Carlo Tree Search) for self-play. We made use of these algorithms to build games like TIC-TAC-TOE and Checkers.
 
 
@@ -30,7 +31,7 @@
 Though games are easy to  formulate they are difficult to master for a machine, this being the reason it has been a popular area of artificial intelligence research for a long time. For decades, game developer have attempted to create the agent with simulate intelligence, specifically, to build the AI player who can learn the game based on its gaming experience, rather than merely following one fixed strategy. The dynamic programming could solve the problem with relative small number of states and simple underlying random structure, but not the complex one.
 
 Most of the other models achieved good performance by using alpha-beta search engine with many domain specific adaptations. Instead of an alpha-beta search with domain-specific enhancements, AlphaZero uses a general purpose Monte-Carlo tree search (MCTS) algorithm. Each search consists of a series of simulated games of self-play that traverse a tree from root sroot to leaf. Each simulation proceeds by selecting in each state s a move a with low visit count, high move probability and high value (averaged over the leaf states of simulations that selected a from s) according to the current neural network f$\theta$.
-The search returns a vector $\pi$ representing a probability distribution over moves, either proportionally or greedily with respect to the visit counts at the root state. 
+The search returns a vector $\pi$ representing a probability distribution over moves, either proportionally or greedily with respect to the visit counts at the root state.
 
 The neural network parameters in AlphaZero are trained by self-play reinforcement learning. The parameters are initialized randomly. AlphaGo Zero estimates and optimises the probability of winning, assuming binary win/loss outcomes. AlphaZero instead estimates and optimises the expected outcome, taking account of draws or potentially other outcomes.
 
@@ -40,21 +41,22 @@ The neural network parameters in AlphaZero are trained by self-play reinforcemen
 \subsection{Monte-Carlo Tree Search}\footnote[1]{Environment adapted from             https://github.com/kaladharusc/DeepReinforcementLearning}
 The focus of Monte Carlo tree search is on the analysis of the most promising moves, expanding the search tree based on random sampling of the search space. The application of Monte Carlo tree search in games is based on many playouts. In each playout, the game is played out to the very end by selecting moves at random. The final game result of each playout is then used to weight the nodes in the game tree so that better nodes are more likely to be chosen in future playouts.
 
-\subsection{Policy and Value Network} 
+\subsection{Policy and Value Network}
     Both Policy and Value are determined by the same network.The heads (output layer) are different for the Network. The value function is a continuous-valued function between [-1,1]. Also, Policy network provides the Probability for the next best move.This makes the network robust as the loss function is applied to the ‘common network’ and the respective heads.SGD is used to reduce the loss for each batch.
-    
+
     Residual Networks are used to achieve more depth in terms of layers.The utilization of RN’s allowed for 20 RN’s.Vanishing Gradients problem is reduced and training error does not increase as the input takes a shortcut with the help of an identity mapping.The actual residual block consists of two CNN’s instead of a Dense Layer.
 
     In each simulation of our algorithm, the best model play a number of episodes (30 in  the current experiments) of self-play using MCTS. The resulting training examples is of the form (s(t), ~π(t), z(t)).
-    
+
     Then, the current best is updated  neural network using the new training examples, to get a new neural network. We then play the old and new networks against each other for a number of games (30 in our experiments). If the new network wins more than a set threshold number of times, the network is updated and continue with the next iteration, resetting the MCTS tree. Else, we continue with the old network and the old MCTS tree, and conduct another iteration to augment our training examples further.
-    
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth, scale=0.5]{tensorflow.png}
-    \caption{Neural Network Architecture}
-    \label{fig:my_label}
-\end{figure}    
+
+    \blindtext
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth, scale=0.5]{tensorflow.png}
+        \caption{Neural Network Architecture}
+        \label{fig:my_label}
+    \end{figure}
 
 
 \section{Data Description}
@@ -67,7 +69,7 @@ The focus of Monte Carlo tree search is on the analysis of the most promising mo
         \end{itemize}
     \item The state space to represent the players of the game and also the spatial
 representation the board/screen.
-    
+
     \item The decision for the next move is calculated on the fly using neural networks.
         \begin{itemize}
             \item Using MCTS and RNN, based on value and policy network, decision is made maximizing the winning chances.
@@ -78,7 +80,7 @@ representation the board/screen.
 \subsection{Tic-Tac-Toe}
 
 Below is the games we developed for tic-tac-tow. We trained the model for 1 hr with 30 Episodes and 30 MCTS simulation for each move and found the it was able to achieve human level performance very quickly and able to beat human in 5 out of 10 games, and 3 games were draw.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,scale=0.5]{tictactoe.png}
     \caption{Tic-Tac-Toe}
@@ -98,7 +100,7 @@ Actions space is different from game state.
         \item Then for every game, we filter out allowed action based on checkers game rules.
     \end{enumerate}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,scale=0.1,]{checkers.png}
     \caption{Checkers}
